@@ -1,0 +1,814 @@
+{
+  "module": "05_FFQ质量打分",
+  "description": "主链：同一去噪图＋传统外部前景Mask；方向/频率特征图是评分中间量，不是图像增强输出。",
+  "steps": [
+    {
+      "step": 1,
+      "title": "输入去噪图",
+      "array_key": "step_001",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "01_输入去噪图.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "外部传统前景Mask",
+      "array_key": "step_002",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "02_外部传统前景Mask.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "缩放后的灰度图",
+      "array_key": "step_003",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "03_缩放后的灰度图.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "百分位归一化",
+      "array_key": "step_004",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "04_百分位归一化.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "中心裁剪到块网格",
+      "array_key": "step_005",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "05_中心裁剪到块网格.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "基础横向梯度",
+      "array_key": "step_006",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "06_基础横向梯度.png",
+          "display_range": [
+            -0.8275882601737976,
+            0.8275882601737976
+          ]
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "title": "基础纵向梯度",
+      "array_key": "step_007",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "07_基础纵向梯度.png",
+          "display_range": [
+            -0.9953418970108032,
+            0.9953418970108032
+          ]
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "title": "基础梯度幅值",
+      "array_key": "step_008",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "08_基础梯度幅值.png",
+          "display_range": [
+            0.002195892855525017,
+            0.9998381733894348
+          ]
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "title": "块级前景判定",
+      "array_key": "step_009",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "bool",
+      "note": "",
+      "images": [
+        {
+          "file": "09_块级前景判定.png",
+          "display_range": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "title": "像素级评分前景",
+      "array_key": "step_010",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "bool",
+      "note": "",
+      "images": [
+        {
+          "file": "10_像素级评分前景.png",
+          "display_range": [
+            0,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "title": "方向估计专用对比度拉伸",
+      "array_key": "step_011",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "11_方向估计专用对比度拉伸.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "title": "方向估计高斯预滤波",
+      "array_key": "step_012",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "12_方向估计高斯预滤波.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "title": "方向估计中值滤波",
+      "array_key": "step_013",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "13_方向估计中值滤波.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "title": "方向场Sobel横梯度",
+      "array_key": "step_014",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "14_方向场Sobel横梯度.png",
+          "display_range": [
+            -390.0,
+            390.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "title": "方向场Sobel纵梯度",
+      "array_key": "step_015",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "15_方向场Sobel纵梯度.png",
+          "display_range": [
+            -372.0,
+            372.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "title": "张量gx平方",
+      "array_key": "step_016",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "16_张量gx平方.png",
+          "display_range": [
+            0.0,
+            152100.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "title": "张量gy平方",
+      "array_key": "step_017",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "17_张量gy平方.png",
+          "display_range": [
+            0.0,
+            138384.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "title": "张量负二倍gxgy",
+      "array_key": "step_018",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "18_张量负二倍gxgy.png",
+          "display_range": [
+            -163586.0,
+            163586.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "title": "基础尺度方向一致性",
+      "array_key": "step_019",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "19_基础尺度方向一致性.png",
+          "display_range": [
+            0.0036735478788614273,
+            0.8646295070648193
+          ]
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "title": "自适应张量n",
+      "array_key": "step_020",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "20_自适应张量n.png",
+          "display_range": [
+            -10331.765625,
+            10331.765625
+          ]
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "title": "自适应张量d",
+      "array_key": "step_021",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "21_自适应张量d.png",
+          "display_range": [
+            -28589.4375,
+            28589.4375
+          ]
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "title": "自适应方向置信度",
+      "array_key": "step_022",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "22_自适应方向置信度.png",
+          "display_range": [
+            0.00230222987011075,
+            0.8788920044898987
+          ]
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "title": "像素级方向角",
+      "array_key": "step_023",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "23_像素级方向角.png",
+          "display_range": [
+            -3.141592653589793,
+            3.141592653589793
+          ]
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "title": "块统计_mean",
+      "array_key": "step_024",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "24_块统计_mean.png",
+          "display_range": [
+            0.49550485610961914,
+            0.558367133140564
+          ]
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "title": "块统计_std",
+      "array_key": "step_025",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "25_块统计_std.png",
+          "display_range": [
+            0.1611977219581604,
+            0.32570376992225647
+          ]
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "title": "块统计_grad_energy",
+      "array_key": "step_026",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "26_块统计_grad_energy.png",
+          "display_range": [
+            0.06648120284080505,
+            0.3203592002391815
+          ]
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "title": "块级纹线方向",
+      "array_key": "step_027",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "27_块级纹线方向.png",
+          "display_range": [
+            -3.141592653589793,
+            3.141592653589793
+          ]
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "title": "块级方向一致性",
+      "array_key": "step_028",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "28_块级方向一致性.png",
+          "display_range": [
+            0.10488009452819824,
+            0.8497084975242615
+          ]
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "title": "纹线周期估计图",
+      "array_key": "step_029",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "29_纹线周期估计图.png",
+          "display_range": [
+            0.0,
+            11.333333015441895
+          ]
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "title": "噪声估计高斯参考",
+      "array_key": "step_030",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "30_噪声估计高斯参考.png",
+          "display_range": [
+            0.0639762133359909,
+            0.9726693630218506
+          ]
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "title": "绝对高频残差",
+      "array_key": "step_031",
+      "shape": [
+        96,
+        96
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "31_绝对高频残差.png",
+          "display_range": [
+            0.0,
+            0.16880443692207336
+          ]
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "title": "块级残差均值",
+      "array_key": "step_032",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "32_块级残差均值.png",
+          "display_range": [
+            0.031433966010808945,
+            0.07857070118188858
+          ]
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "title": "首个有效投影窗口",
+      "array_key": "step_033",
+      "shape": [
+        43,
+        23
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "33_首个有效投影窗口.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "title": "投影窗口有效Mask",
+      "array_key": "step_034",
+      "shape": [
+        43,
+        23
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "34_投影窗口有效Mask.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "title": "纹线周期峰谷投影",
+      "note": "按调用顺序首个实际计算投影的窗口，不按效果筛选",
+      "images": [
+        {
+          "file": "35_纹线周期峰谷投影.png",
+          "display_range": "see axes/legend"
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "title": "七项子分数",
+      "note": "",
+      "images": [
+        {
+          "file": "36_七项子分数.png",
+          "display_range": "see axes/legend"
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "title": "权重融合至最终评分",
+      "note": "并列的是实际规则的不同阶段，不是多张图的对比",
+      "images": [
+        {
+          "file": "37_权重融合至最终评分.png",
+          "display_range": "see axes/legend"
+        }
+      ]
+    }
+  ],
+  "extra": {
+    "features": {
+      "resized_width": 100,
+      "resized_height": 110,
+      "foreground_ratio": 1.0,
+      "largest_component_ratio": 1.0,
+      "center_coverage_ratio": 1.0,
+      "border_touch_ratio": 1.0,
+      "border_touch_sides": 4,
+      "coherence_mean": 0.4702412784099579,
+      "coherence_std": 0.2131739854812622,
+      "coherence_p10": 0.1968666911125183,
+      "low_coherence_ratio": 0.3055555555555556,
+      "high_coherence_ratio": 0.2777777777777778,
+      "orientation_difference_mean": 0.07899262011051178,
+      "orientation_difference_p90": 0.23607122898101807,
+      "orientation_jump_ratio": 0.08888888888888889,
+      "orientation_pair_count": 45,
+      "frequency_valid_ratio": 0.8055555555555556,
+      "ridge_period_mean": 6.991535186767578,
+      "ridge_period_std": 1.2916866540908813,
+      "ridge_period_cv": 0.18475007556789133,
+      "ridge_period_p10": 5.863636493682861,
+      "ridge_period_p90": 8.838094711303711,
+      "frequency_neighbor_diff_mean": 0.8773910403251648,
+      "frequency_neighbor_diff_p90": 1.8887442350387573,
+      "frequency_jump_ratio": 0.046511627906976744,
+      "frequency_pair_count": 43,
+      "local_std_mean": 0.2231251448392868,
+      "local_std_p10": 0.17368879914283752,
+      "low_contrast_ratio": 0.0,
+      "over_dark_ratio": 0.0,
+      "over_bright_ratio": 0.0,
+      "gradient_energy_mean": 0.14296917617321014,
+      "gradient_energy_p10": 0.08638472855091095,
+      "weak_gradient_ratio": 0.0,
+      "noise_residual_mean": 0.047460056841373444,
+      "noise_residual_p90": 0.09596890956163406,
+      "strong_noise_ratio": 0.1808810763888889,
+      "noise_block_std": 0.010580264031887054,
+      "gbfoe_adaptive_sigma": 8.094560354948044
+    },
+    "subscores": {
+      "area_score": 82.0,
+      "orientation_coherence_score": 13.159125719061477,
+      "orientation_flow_score": 69.05990349785334,
+      "frequency_score": 84.20167001503141,
+      "contrast_score": 99.99999999999999,
+      "sharpness_score": 100.0,
+      "noise_score": 36.64789449864123
+    },
+    "quality_score": 35.00872327931348,
+    "config": {
+      "max_side": 320,
+      "block_size": 16,
+      "sobel_ksize": 3,
+      "min_block_std": 0.035,
+      "min_block_gradient": 0.02,
+      "min_block_mean": 0.03,
+      "max_block_mean": 0.97,
+      "keep_largest_component": true,
+      "external_mask_block_ratio": 0.1,
+      "low_coherence_threshold": 0.35,
+      "high_coherence_threshold": 0.65,
+      "orientation_jump_threshold": 0.3,
+      "gbfoe_percentile": 19.0,
+      "gbfoe_sigma_smooth": 1.25,
+      "gbfoe_median_size": 5,
+      "gbfoe_sigma_base": 9.0,
+      "gbfoe_sigma_multiplier": 15.0,
+      "gbfoe_sigma_min": 3.0,
+      "gbfoe_sigma_max": 18.0,
+      "freq_window_width": 23,
+      "freq_window_height": 43,
+      "freq_period_min": 5.0,
+      "freq_period_max": 20.0,
+      "freq_min_valid_distances": 4,
+      "freq_min_mask_ratio": 0.55,
+      "freq_peak_tolerance": 2.0,
+      "weight_area": 0.06,
+      "weight_coherence": 0.3,
+      "weight_flow": 0.18,
+      "weight_frequency": 0.2,
+      "weight_contrast": 0.13,
+      "weight_sharpness": 0.05,
+      "weight_noise": 0.08
+    },
+    "timing_ms": {
+      "preprocess_time_ms": 2.520290000006753,
+      "foreground_time_ms": 1.2675259999923583,
+      "orientation_time_ms": 6.030353000028299,
+      "frequency_time_ms": 39.05580100001771,
+      "feature_time_ms": 8.486408000067058
+    }
+  }
+}

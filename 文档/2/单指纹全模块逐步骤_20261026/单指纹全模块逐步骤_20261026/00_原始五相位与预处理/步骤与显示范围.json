@@ -1,0 +1,410 @@
+{
+  "module": "00_原始五相位与预处理",
+  "description": "同一次normal采集，五张wo和五张wi；差分与五帧共用范围量化后送入实际V7。",
+  "steps": [
+    {
+      "step": 1,
+      "title": "wo_Rgd1421",
+      "array_key": "step_001",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "01_wo_Rgd1421.png",
+          "display_range": [
+            11488.0,
+            41584.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "wo_Rgd1423",
+      "array_key": "step_002",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "02_wo_Rgd1423.png",
+          "display_range": [
+            6560.0,
+            21840.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "wo_Rgd1425",
+      "array_key": "step_003",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "03_wo_Rgd1425.png",
+          "display_range": [
+            4352.0,
+            19520.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "wo_Rgd1427",
+      "array_key": "step_004",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "04_wo_Rgd1427.png",
+          "display_range": [
+            4512.0,
+            23568.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "wo_Rgd1429",
+      "array_key": "step_005",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "05_wo_Rgd1429.png",
+          "display_range": [
+            16896.0,
+            47088.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "wi_Rgd1421",
+      "array_key": "step_006",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "06_wi_Rgd1421.png",
+          "display_range": [
+            10560.0,
+            30688.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "title": "wi_Rgd1423",
+      "array_key": "step_007",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "07_wi_Rgd1423.png",
+          "display_range": [
+            5888.0,
+            34320.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "title": "wi_Rgd1425",
+      "array_key": "step_008",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "08_wi_Rgd1425.png",
+          "display_range": [
+            6080.0,
+            22464.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "title": "wi_Rgd1427",
+      "array_key": "step_009",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "09_wi_Rgd1427.png",
+          "display_range": [
+            11520.0,
+            39168.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "title": "wi_Rgd1429",
+      "array_key": "step_010",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "10_wi_Rgd1429.png",
+          "display_range": [
+            16704.0,
+            53712.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "title": "wo减wi_Rgd1421",
+      "array_key": "step_011",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "11_wo减wi_Rgd1421.png",
+          "display_range": [
+            -20304.0,
+            20304.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "title": "wo减wi_Rgd1423",
+      "array_key": "step_012",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "12_wo减wi_Rgd1423.png",
+          "display_range": [
+            -15968.0,
+            15968.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "title": "wo减wi_Rgd1425",
+      "array_key": "step_013",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "13_wo减wi_Rgd1425.png",
+          "display_range": [
+            -7904.0,
+            7904.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "title": "wo减wi_Rgd1427",
+      "array_key": "step_014",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "14_wo减wi_Rgd1427.png",
+          "display_range": [
+            -29696.0,
+            29696.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "title": "wo减wi_Rgd1429",
+      "array_key": "step_015",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "15_wo减wi_Rgd1429.png",
+          "display_range": [
+            -9712.0,
+            9712.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "title": "五帧共用量化_Rgd1421",
+      "array_key": "step_016",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "16_五帧共用量化_Rgd1421.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "title": "五帧共用量化_Rgd1423",
+      "array_key": "step_017",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "17_五帧共用量化_Rgd1423.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "title": "五帧共用量化_Rgd1425",
+      "array_key": "step_018",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "18_五帧共用量化_Rgd1425.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "title": "五帧共用量化_Rgd1427",
+      "array_key": "step_019",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "19_五帧共用量化_Rgd1427.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "title": "五帧共用量化_Rgd1429",
+      "array_key": "step_020",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "20_五帧共用量化_Rgd1429.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    }
+  ],
+  "extra": {
+    "common_min": -29696.0,
+    "common_max": 20304.0
+  }
+}

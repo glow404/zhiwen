@@ -1,0 +1,89 @@
+# 全局配置文件
+
+# 图像处理参数
+image:
+  default_format: "tif"
+  supported_formats: ["tif", "bmp", "png"]
+  target_size: [512, 512]  # 目标图像尺寸
+
+# 衍射校正参数
+diffraction_correction:
+  enable_temporal: true
+  enable_spatial: true
+  deconv_kernel_size: 5
+  iq_recovery_mode: "max_amplitude"
+
+# 降噪参数
+denoising:
+  model_path: "data/models/unet_denoising.h5"
+  noise_estimation: true
+  adaptive_strength: true
+  preserve_edges: true
+
+# 分割参数
+segmentation:
+  orientation_block_size: 16
+  gradient_threshold: 0.1
+  morphological_kernel_size: 5
+  min_area_ratio: 0.1  # 最小区域面积比例
+
+# 质量评估参数
+quality_assessment:
+  nfiq2_enabled: true
+  gabor_frequencies: [0.1, 0.2, 0.3]
+  quality_threshold: 30  # 注册质量阈值
+
+# 量化参数
+quantization:
+  global_quantiles: [0.1, 0.9]  # 全局分位点
+  local_window_size: 15
+  local_template: "adaptive"
+
+# 增强参数
+enhancement:
+  gabor_frequencies: [0.1, 0.2, 0.3]
+  gabor_orientations: [0, 45, 90, 135]
+  local_confidence_weight: 0.8
+  preserve_keypoints: true
+
+# 特征提取参数
+feature_extraction:
+  sift_n_features: 0  # 0表示提取所有特征点，最小50个
+  sift_n_octave_layers: 3
+  sift_contrast_threshold: 0.04
+  descriptor_model_path: "data/models/feature_descriptor.h5"
+  descriptor_bits: 512
+  min_features: 50
+
+# 二值化参数
+binarization:
+  method: "otsu"
+  adaptive: false
+
+# 匹配参数
+matching:
+  ransac_threshold: 3.0
+  ransac_max_iter: 2000
+  min_inliers: 10
+  coarse_match_ratio: 0.8
+
+# 相似度计算参数
+similarity:
+  overlap_threshold: 0.5  # 最小重叠区域比例
+
+# 鉴权参数
+authentication:
+  normal_frr_threshold: 0.03
+  normal_far_threshold: 0.00002  # 1/5W
+  special_frr_threshold: 0.05
+  cascade_stages: 10
+  recall_classifier_enabled: true
+
+# 训练参数
+training:
+  batch_size: 16
+  learning_rate: 0.001
+  epochs: 100
+  validation_split: 0.2
+  model_save_dir: "data/models"
+

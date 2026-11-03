@@ -1,0 +1,167 @@
+# 默认配置文件
+# 作用：
+# - 作为项目的通用默认参数入口
+# - 覆盖单图实验、后续批处理和调参时的大多数基础配置
+# 输入：
+# - 被 `src/config/loader.py` 读取
+# 输出：
+# - 解析后映射为 `AppConfig`
+
+# 项目元信息。
+app:
+  name: "opencv_sift_fingerprint"
+  template_version: "v0.1"
+
+# 输入配置。
+# single_image_path: 单图模式下使用的输入图路径；批处理模式下通常保持为 null。
+# input_roots: 批处理输入根目录列表。
+# recursive: 是否递归扫描子目录。
+# patterns: 允许处理的图像后缀名。
+input:
+  single_image_path: null
+  input_roots: [C:\Users\ZYH\Desktop\research\zhiwen\code\todo\opencv-sift\data]
+  recursive: true
+  patterns:
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+    - ".bmp"
+    - ".tif"
+    - ".tiff"
+
+# 输出配置。
+# output_root: 本次运行的输出根目录。
+# save_template/save_visualization/save_intermediate: 控制是否保存模板、可视化图和预处理结果。
+output:
+  output_root: "outputs/default_run"
+  template_dirname: "templates"
+  visualization_dirname: "visualizations"
+  intermediate_dirname: "intermediate"
+  report_dirname: "reports"
+  log_dirname: "logs"
+  overwrite: true
+  save_template: true
+  save_visualization: true
+  save_intermediate: true
+
+# 预处理配置。
+# 这部分会先影响图像对比度、噪声和背景，再间接影响 SIFT 最终能检测到多少关键点。
+preprocess:
+  resize:
+    # 是否在预处理前缩放图像。缩小后通常会减少关键点数量。
+    enabled: false
+    # enabled=true 时，图像最大边限制。
+    max_size: 1024
+  normalize:
+    # 是否做灰度归一化。
+    enabled: true
+    # 目标均值。
+    mean_target: 128.0
+    # 目标标准差。过小可能压缩对比度，间接减少关键点。
+    std_target: 50.0
+  clahe:
+    # 是否启用 CLAHE 局部对比度增强。
+    enabled: true
+    # 对比度增强强度。适当增大常会让纹理更明显，从而增加关键点。
+    clip_limit: 2.0
+    tile_grid_size:
+      - 8
+      - 8
+  denoise:
+    # 去噪方式。
+    method: "gaussian"
+    # 去噪核大小。过大容易抹平细节，导致关键点减少。
+    kernel_size: 3
+    # 高斯去噪 sigma。
+    sigma: 0.0
+  background_suppression:
+    # 是否抑制背景区域。
+    enabled: true
+    # 背景填充值。
+    fill_value: 0
+    # 背景掩膜模糊核。过大可能影响前景边缘细节。
+    blur_kernel: 5
+  debug:
+    # 是否输出预处理各阶段的调试图。
+    enabled: false
+    # 调试图保存目录。
+    save_dir: "outputs/debug"
+    # 是否保存中间图。
+    save_intermediate: true
+
+# ROI 配置。
+# ROI 越严格，参与 SIFT 的有效区域越小，最终关键点数量通常越少。
+roi:
+  # 是否启用 ROI 提取。
+  enabled: true
+  # ROI 方法。当前支持 block_variance / full_image。
+  method: "block_variance"
+  # ROI 外扩边距。
+  margin: 0
+  # 局部方差块大小。
+  block_size: 16
+  # 方差阈值。调高通常会缩小前景区域，关键点更少；调低通常会增加关键点。
+  variance_threshold: 18.0
+  # 形态学核大小。
+  morph_kernel: 5
+  # 闭运算次数。
+  close_iters: 1
+  # 开运算次数。
+  open_iters: 2
+  # 最小前景面积占比。
+  min_area_ratio: 0.05
+  # 是否只保留最大连通域。
+  use_largest_component: true
+
+# SIFT 配置。
+# 下面这些参数里，真正最直接影响“最后关键点数量”的主要是：
+# - nfeatures
+# - contrast_threshold
+# - edge_threshold
+# - n_octave_layers
+# - sigma
+# 其中最常调的是 nfeatures、contrast_threshold、edge_threshold。
+sift:
+  # 保留的关键点数量上限。
+  # 0 表示不主动限制上限，由 OpenCV 按检测结果返回全部关键点。
+  # 如果你想直接控制“最多输出多少个关键点”，优先调这个参数。
+  nfeatures: 400
+  # 尺度空间层数。
+  # 增大后通常会在更多尺度上检测到特征，关键点可能增多，但也会带来更多弱特征。
+  n_octave_layers: 3
+  # 对比度阈值。
+  # 调低：更容易通过检测，关键点通常增多。
+  # 调高：过滤更多弱响应点，关键点通常减少。
+  contrast_threshold: 0.1
+  # 边缘响应阈值。
+  # 调大：允许更多边缘附近点保留下来，关键点通常增多。
+  # 调小：更严格抑制边缘点，关键点通常减少。
+  edge_threshold: 6.0
+  # SIFT 初始高斯模糊 sigma。
+  # 调大通常会更平滑，细小纹理变少，关键点可能减少；
+  # 调小则更容易保留细节，但也可能引入噪声点。
+  sigma: 1.8
+  # 描述子类型，主要影响描述子存储形式，不是控制关键点数量的主参数。
+  descriptor_type: "default"
+
+# 可视化配置。
+visualization:
+  # 是否生成关键点可视化图。
+  enabled: true
+  # 是否绘制带尺度和方向信息的关键点。
+  draw_rich_keypoints: true
+  # 是否绘制 ROI 框。
+  draw_roi_bbox: true
+
+# 日志配置。
+logging:
+  # 日志级别。
+  level: "INFO"
+  # 是否输出到控制台。
+  console_enabled: true
+  # 是否写入日志文件。
+  file_enabled: true
+  # 日志文件名。
+  filename: "pipeline.log"
+  # logger 名称。
+  logger_name: "fingerprint_pipeline"

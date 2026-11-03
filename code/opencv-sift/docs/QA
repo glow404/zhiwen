@@ -1,0 +1,44 @@
+1.使用的ROI方法详解
+3.
+  # 描述子类型，主要影响描述子存储形式，不是控制关键点数量的主参数。
+  descriptor_type: "default"  #default代表 32 位浮点数描述子，uint8 表示使用 8 位整数描述子。
+
+4.# 预处理配置。
+# 这部分会先影响图像对比度、噪声和背景，再间接影响 SIFT 最终能检测到多少关键点。
+preprocess:
+  resize:
+    # 是否在预处理前缩放图像。缩小后通常会减少关键点数量。
+    enabled: false
+    # enabled=true 时，图像最大边限制。
+    max_size: 1024
+  normalize:
+    # 是否做灰度归一化。
+    enabled: true
+    # 目标均值。
+    mean_target: 128.0
+    # 目标标准差。过小可能压缩对比度，间接减少关键点。
+    std_target: 50.0
+  clahe:
+    # 是否启用 CLAHE 局部对比度增强。
+    enabled: true
+    # 对比度增强强度。适当增大常会让纹理更明显，从而增加关键点。
+    clip_limit: 2.0
+    tile_grid_size:
+      - 8
+      - 8
+  denoise:
+    # 去噪方式。
+    method: "gaussian"
+    # 去噪核大小。过大容易抹平细节，导致关键点减少。
+    kernel_size: 3
+    # 高斯去噪 sigma。
+    sigma: 0.0
+  background_suppression:
+    # 是否抑制背景区域。
+    enabled: true
+    # 背景填充值。
+    fill_value: 0
+    # 背景掩膜模糊核。过大可能影响前景边缘细节。
+    blur_kernel: 5
+
+5.nms处理方法 用 .npz 的 keypoints_response响应值 决定“谁先保留”，再按距离/方向规则把邻近弱点压掉。

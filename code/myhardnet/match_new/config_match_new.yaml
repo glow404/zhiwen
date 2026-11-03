@@ -1,0 +1,178 @@
+# match_new 正式实验配置
+#
+# 这个配置对应一套支持 HardNet 浮点或二值描述子的指纹离线验证实验：
+#   1. 每个 identity 随机选 40 张图作为注册模板；
+#   2. 其余图作为 query；
+#   3. query 分别对本人模板库和所有非本人模板库打 identity 级分数；
+#   4. 使用 checkpoint 对应的 L2/Hamming 距离生成候选，再通过 RANSAC/脊线纹理融合输出 match score；
+#   5. 在配置的匹配阈值下导出 false reject / false accept 原图，方便人工排查失败原因。
+
+extends: config_match_tuning.yaml
+
+runtime:
+  # 每个 query 最多比对几个非本人 identity：
+  #   -1 = 全量 impostor；0 = 不比对非本人；正整数 = 最多抽这么多个。
+  max_impostor_identities_per_query: 0
+
+  # 调试裁剪：只保留前 N 个 identity；0 表示不限制。正式实验必须为 0。
+  limit_identities: 0
+
+  # 调试裁剪：每个 identity 最多保留 N 张图；0 表示不限制。正式实验必须为 0。
+  # 例如设为 42，配合 enrollment_images_per_identity=40，可形成 40 注册 + 2 query。
+  limit_images_per_identity: 0
+
+data: {}
+  # 固定结构：image_root/<手指目录>/图像文件（类似 datasets/wet）。
+  # 多一层中间目录或不放在手指目录下会直接报错。
+
+model:
+  # auto：由 checkpoint 自动选择 float/L2 或 binary/Hamming。
+  descriptor_kind: auto
+
+  # 模型架构和描述子维度默认从 checkpoint 元数据读取；
+  architecture: auto
+  descriptor_dim: auto
+
+  # 二值 checkpoint 的模板存储契约。packed_uint8 表示每 8 bit 存为 1 byte；
+  # storage/bitorder 均可设为 auto 跟随 checkpoint。显式值不一致时会立即报错。
+  binary_storage: auto
+  binary_bitorder: auto
+
+  # 对浮点 checkpoint 输出直接执行 Hf -> sign -> packed uint8，随后使用
+  # 归一化 Hamming 距离匹配。不使用随机置换矩阵 P、对角符号矩阵 D，
+  # 也不再读写 P/D state 文件。order 必须等于浮点描述子维度。
+  # 开关 enabled 在 config_match_tuning.yaml 中常调。
+  hadamard_binarization:
+    order: 256
+    bitorder: little
+    zero_is_one: true
+
+  # 0 表示动态 batch；设为 512 会把最后一个 batch 补零到固定大小。
+  fixed_inference_batch_size: 0
+
+  # ONNX Runtime 是唯一的 CNN 推理后端，固定使用 CPU、FP32、NCHW。
+  device: cpu
+  inference_backend: onnxruntime
+  inference_precision: fp32
+
+  # PyTorch 仅用于模型加载和后处理；此线程数控制 hash/Hadamard 等后处理。
+  cpu_num_threads: 1
+
+  # ONNX Runtime 参数。
+  backend_num_threads: 16
+  backend_inter_op_num_threads: 1
+  backend_graph_optimization: all
+  onnx_path:
+  onnx_opset_version: 17
+
+  # 导出 ONNX 图前对内存中的 eval 模型副本执行 Conv-BN 融合。
+  fuse_conv_bn: true
+
+  # 关闭稳态模板构建中的分阶段计时；benchmark 会显式打开。
+  profile_inference: false
+
+sift:
+  # SIFT 在 HardNet 主实验中只负责提供关键点位置和方向； 这里的参数与邓宇的sift，训练时用的sift保持一致，可试着修改。
+  nfeatures: 400    #每层最多检测的关键点数。越大检测越密集
+  nOctaveLayers: 3   #尺度层数。越大尺度采样越细，关键点更多
+  contrastThreshold: 0.03  #对比度阈值，低于此值的点不作为关键点。越小越容易保留弱纹理 0.02-0.04
+  edgeThreshold: 17.5  #边缘响应阈值，避免检测到边缘点，越大越容易保留边缘点 10-14
+  sigma: 1.70  #第一层尺度空间的高斯模糊强度。影响关键点主要在哪个尺度上被检测到。 1.5-1.7
+
+  # 与前面 match/val 实验保持一致的图像预处理。
+  enable_clahe: false
+  clahe_clip: 4.0
+  clahe_tile: [8, 8]
+  enable_blur: false
+  blur_sigma: 0.8
+
+patch:
+  # keypoint 靠近边界时，如果裁剪窗口与原图有效重叠过低，就丢弃该点。
+  min_overlap_ratio: 0.75
+  # 局部块按关键点方向做反向坐标采样，保持训练和评估的 patch 坐标规则一致。
+
+keypoint_filter:
+  # 每张图最多保留的 SIFT keypoints 数，按 response 从高到低截断。
+  max_keypoints: 400
+
+matching:
+  # auto：浮点 checkpoint 使用 L2，二值 checkpoint 使用归一化 Hamming。
+  # 也可显式写 l2/hamming 作为 checkpoint 契约校验。
+  distance: auto
+
+  # 候选生成策略：
+  #   ratio_only     : 只保留通过 Lowe ratio 的最近邻；
+  #   topk_only      : 保留 top-k 中距离足够近的候选；
+  #   topk_or_ratio  : 通过 ratio 则保留最近邻，否则退回 top-k 自适应阈值。
+  candidate_policy: ratio_only
+
+  # 每个 query keypoint 最多向 gallery 取几个近邻候选。
+  top_k: 1
+
+  # 候选过多会拖慢 RANSAC，也容易引入噪声；超限时只按描述子距离从小到大截断。
+  max_candidates_for_ransac: 250
+
+  # 以下参数只控制最终内点的方向一致性诊断，完全不影响匹配结果。
+  orientation_hist_bin_deg: 10.0
+  orientation_consistency_thresh_deg: 20.0
+
+  # one-to-one 去重时的排序分数：
+  #   descriptor_distance + reproj_error_weight * reprojection_error
+  reproj_error_weight: 0.05
+
+  # RANSAC 几何验证参数。使用 estimateAffinePartial2D，适合局部旋转/缩放/平移。
+  ransac_reproj_threshold: 0.5  
+  ransac_max_iters: 3000
+  ransac_confidence: 0.995
+
+  # 指纹图像主要是平移/旋转，只有极少量尺度变化。
+  # RANSAC 得到 partial affine 后，只约束 scale，不限制旋转角。
+  min_scale: 0.80
+  max_scale: 1.20
+
+texture_verification:
+  # C 方案：先用几何内点保证仿射可用，再融合几何分数和局部脊线纹理分数。
+  # 启用后模板必须含 overlap_image；首次运行需重新构建模板，不能复用旧版模板。
+  enabled: true
+
+template_management:
+  # 离线评估中的动态模板学习总开关。
+  enabled: false
+
+  # 活动模板库最大数量；初始受保护模板数量直接取 enrollment_images_per_identity。
+  max_active_templates: 40
+
+
+  # 学习准入：本人匹配分数达到该阈值，且仿射对齐后的公共纹理区域率不高于该值。
+  learn_score_threshold: 0.80
+  max_common_area_ratio: 0.70
+
+  # 公共纹理区域计算参数。（计算mask掩码用）
+  coverage_window_size: 9
+  coverage_min_std: 5.0
+  coverage_morph_kernel: 3
+
+identification:
+  #   max       : 注册模板里取最高图像级分数；
+  #   top3_mean : 可用于消融，更保守。
+  fusion_method: max
+
+  # [0,1] 连续 identity 匹配分数阈值，用于报告 FAR/FRR。
+  match_score_threshold: 0.80
+
+  # 对 max / max_quality_tiebreak，达到阈值即可停止遍历剩余注册模板；
+  # 关闭后完整遍历以获得准确 identity 最大分数。
+  early_stop_on_unlock_threshold: true
+  early_stop_threshold:
+
+evaluation:
+  # 全部未注册 query 使用同一个池计算阈值曲线并报告最终指标。
+  # true 表示按 score_threshold_step 扫描 [0,1] 连续分数阈值。
+  auto_thresholds: true
+  score_threshold_step: 0.01
+
+  # 固定 FAR/FRR 对照表输出范围，写入 far_frr_thresholds_<min>_<max>.csv。
+  far_frr_table:
+    min_threshold: 0.50
+    max_threshold: 0.85
+    step: 0.01

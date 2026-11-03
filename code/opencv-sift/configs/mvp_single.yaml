@@ -1,0 +1,94 @@
+# 单图 MVP 示例配置文件
+# 作用：
+# - 用于当前最小可运行版本的单张指纹图实验
+# - 提供单图读取、预处理、SIFT、模板保存和可视化的基础参数
+# 输入：
+# - 被 `scripts/run_mvp.py` 读取
+# 输出：
+# - 解析后映射为 `AppConfig`
+app:
+  name: "opencv_sift_fingerprint_mvp"
+  template_version: "v0.1"
+
+input:
+  single_image_path: "data/sample.png"
+  input_roots: []
+  recursive: false
+  patterns:
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+    - ".bmp"
+    - ".tif"
+    - ".tiff"
+
+output:
+  output_root: "outputs/mvp_single"
+  template_dirname: "templates"
+  visualization_dirname: "visualizations"
+  intermediate_dirname: "intermediate"
+  report_dirname: "reports"
+  log_dirname: "logs"
+  overwrite: true
+  save_template: true
+  save_visualization: true
+  save_intermediate: true
+
+preprocess:
+  resize:
+    enabled: false
+    max_size: 1024
+  normalize:
+    enabled: true
+    mean_target: 128.0
+    std_target: 50.0
+  clahe:
+    enabled: true
+    clip_limit: 2.0
+    tile_grid_size:
+      - 8
+      - 8
+  denoise:
+    method: "gaussian"
+    kernel_size: 3
+    sigma: 0.0
+  background_suppression:
+    enabled: true
+    fill_value: 0
+    blur_kernel: 5
+  debug:
+    enabled: true
+    save_dir: "outputs/debug"
+    save_intermediate: true
+
+roi:
+  enabled: true
+  method: "block_variance"
+  margin: 0
+  block_size: 16
+  variance_threshold: 12.0
+  morph_kernel: 3
+  close_iters: 1
+  open_iters: 1
+  min_area_ratio: 0.05
+  use_largest_component: true
+
+sift:
+  nfeatures: 0
+  n_octave_layers: 3
+  contrast_threshold: 0.04
+  edge_threshold: 10.0
+  sigma: 1.6
+  descriptor_type: "default"
+
+visualization:
+  enabled: true
+  draw_rich_keypoints: true
+  draw_roi_bbox: true
+
+logging:
+  level: "INFO"
+  console_enabled: true
+  file_enabled: true
+  filename: "pipeline.log"
+  logger_name: "fingerprint_pipeline"

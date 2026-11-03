@@ -1,0 +1,432 @@
+{
+  "module": "03_传统Mask分割",
+  "description": "主链分割使用交付C++对应的GMFS V2；每个中间Mask均保存，不人为改变全白结果。",
+  "steps": [
+    {
+      "step": 1,
+      "title": "输入去噪图",
+      "array_key": "step_001",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "01_输入去噪图.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "规范化uint8灰度",
+      "array_key": "step_002",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "02_规范化uint8灰度.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "Sobel横向梯度",
+      "array_key": "step_003",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "03_Sobel横向梯度.png",
+          "display_range": [
+            -563.0,
+            563.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "Sobel纵向梯度",
+      "array_key": "step_004",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "04_Sobel纵向梯度.png",
+          "display_range": [
+            -708.0,
+            708.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "梯度幅值",
+      "array_key": "step_005",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "05_梯度幅值.png",
+          "display_range": [
+            0.0,
+            722.290771484375
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "高斯平滑梯度幅值",
+      "array_key": "step_006",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "06_高斯平滑梯度幅值.png",
+          "display_range": [
+            100.75310516357422,
+            405.89764404296875
+          ]
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "title": "百分位阈值二值化",
+      "array_key": "step_007",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "07_百分位阈值二值化.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "title": "闭运算后",
+      "array_key": "step_008",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "08_闭运算后.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "title": "第一次保留最大连通域",
+      "array_key": "step_009",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "09_第一次保留最大连通域.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "title": "基础填洞后",
+      "array_key": "step_010",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "10_基础填洞后.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "title": "开运算后",
+      "array_key": "step_011",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "11_开运算后.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "title": "第二次保留最大连通域",
+      "array_key": "step_012",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "12_第二次保留最大连通域.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "title": "几何修复内部小洞填充",
+      "array_key": "step_013",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "13_几何修复内部小洞填充.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "title": "背景连通域输入",
+      "array_key": "step_014",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "14_背景连通域输入.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "title": "背景连通域标签",
+      "array_key": "step_015",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "int32",
+      "note": "",
+      "images": [
+        {
+          "file": "15_背景连通域标签.png",
+          "display_range": [
+            0.0,
+            4.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "title": "几何修复后",
+      "array_key": "step_016",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "16_几何修复后.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "title": "最终轻度闭运算",
+      "array_key": "step_017",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "17_最终轻度闭运算.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "title": "最终保留最大连通域Mask",
+      "array_key": "step_018",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "18_最终保留最大连通域Mask.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "title": "前景图像",
+      "array_key": "step_019",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "19_前景图像.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    }
+  ],
+  "extra": {
+    "threshold": 86.53589416503905,
+    "repair_diagnostics": [
+      {
+        "label": 1,
+        "area_ratio": 0.0005454545454545455,
+        "touches_border": true,
+        "border_contact_ratio": 0.01201923076923077,
+        "surround_fg_ratio": 1.0,
+        "inward_depth_ratio": 0.01,
+        "fill": true,
+        "reason": "edge_cavity"
+      },
+      {
+        "label": 2,
+        "area_ratio": 0.0005454545454545455,
+        "touches_border": true,
+        "border_contact_ratio": 0.01201923076923077,
+        "surround_fg_ratio": 1.0,
+        "inward_depth_ratio": 0.01,
+        "fill": true,
+        "reason": "edge_cavity"
+      },
+      {
+        "label": 3,
+        "area_ratio": 0.0005454545454545455,
+        "touches_border": true,
+        "border_contact_ratio": 0.01201923076923077,
+        "surround_fg_ratio": 1.0,
+        "inward_depth_ratio": 0.01,
+        "fill": true,
+        "reason": "edge_cavity"
+      },
+      {
+        "label": 4,
+        "area_ratio": 0.0005454545454545455,
+        "touches_border": true,
+        "border_contact_ratio": 0.01201923076923077,
+        "surround_fg_ratio": 1.0,
+        "inward_depth_ratio": 0.01,
+        "fill": true,
+        "reason": "edge_cavity"
+      }
+    ],
+    "foreground_fraction": 1.0
+  }
+}

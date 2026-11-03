@@ -1,0 +1,1707 @@
+{
+  "module": "07_指纹生长_人工缺口演示分支",
+  "description": "独立合成演示：在同一normal去噪图中心创建固定椭圆缺口并置零，仅展示当前V3内部流程。此Mask不是采集缺陷检测，也不是前景Mask；演示输出不回写主链。",
+  "steps": [
+    {
+      "step": 1,
+      "title": "完整去噪图_合成对照目标",
+      "array_key": "step_001",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "01_完整去噪图_合成对照目标.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "人工演示缺口Mask",
+      "array_key": "step_002",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "02_人工演示缺口Mask.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "缺口置零的演示输入",
+      "array_key": "step_003",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "03_缺口置零的演示输入.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "可见区域Mask",
+      "array_key": "step_004",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "04_可见区域Mask.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "腐蚀后可见区域",
+      "array_key": "step_005",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "05_腐蚀后可见区域.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "可见纹线切向角",
+      "array_key": "step_006",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "06_可见纹线切向角.png",
+          "display_range": [
+            -3.141592653589793,
+            3.141592653589793
+          ]
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "title": "结构张量一致性",
+      "array_key": "step_007",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "07_结构张量一致性.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "title": "方向条件置信度",
+      "array_key": "step_008",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "08_方向条件置信度.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "title": "双角度sin",
+      "array_key": "step_009",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "09_双角度sin.png",
+          "display_range": [
+            -1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "title": "双角度cos",
+      "array_key": "step_010",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "10_双角度cos.png",
+          "display_range": [
+            -1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "title": "纹理双通道输入",
+      "array_key": "step_011",
+      "shape": [
+        2,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "11_纹理双通道输入_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "title": "结构四通道输入",
+      "array_key": "step_012",
+      "shape": [
+        4,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "12_结构四通道输入_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "title": "网络_te1.net.0",
+      "array_key": "step_013",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "13_网络_te1.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "title": "网络_te1.net.1",
+      "array_key": "step_014",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "14_网络_te1.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "title": "网络_te1.net.2",
+      "array_key": "step_015",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "15_网络_te1.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "title": "网络_te1.net.3",
+      "array_key": "step_016",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "16_网络_te1.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "title": "网络_te1.net.4",
+      "array_key": "step_017",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "17_网络_te1.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "title": "网络_te1.net.5",
+      "array_key": "step_018",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "18_网络_te1.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "title": "网络_te1.skip",
+      "array_key": "step_019",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "19_网络_te1.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "title": "网络_se1.net.0",
+      "array_key": "step_020",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "20_网络_se1.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "title": "网络_se1.net.1",
+      "array_key": "step_021",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "21_网络_se1.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "title": "网络_se1.net.2",
+      "array_key": "step_022",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "22_网络_se1.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "title": "网络_se1.net.3",
+      "array_key": "step_023",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "23_网络_se1.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "title": "网络_se1.net.4",
+      "array_key": "step_024",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "24_网络_se1.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "title": "网络_se1.net.5",
+      "array_key": "step_025",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "25_网络_se1.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "title": "网络_se1.skip",
+      "array_key": "step_026",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "26_网络_se1.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "title": "网络_te2.net.0",
+      "array_key": "step_027",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "27_网络_te2.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "title": "网络_te2.net.1",
+      "array_key": "step_028",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "28_网络_te2.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "title": "网络_te2.net.2",
+      "array_key": "step_029",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "29_网络_te2.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "title": "网络_te2.net.3",
+      "array_key": "step_030",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "30_网络_te2.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "title": "网络_te2.net.4",
+      "array_key": "step_031",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "31_网络_te2.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "title": "网络_te2.net.5",
+      "array_key": "step_032",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "32_网络_te2.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "title": "网络_te2.skip",
+      "array_key": "step_033",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "33_网络_te2.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "title": "网络_se2.net.0",
+      "array_key": "step_034",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "34_网络_se2.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "title": "网络_se2.net.1",
+      "array_key": "step_035",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "35_网络_se2.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "title": "网络_se2.net.2",
+      "array_key": "step_036",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "36_网络_se2.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "title": "网络_se2.net.3",
+      "array_key": "step_037",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "37_网络_se2.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "title": "网络_se2.net.4",
+      "array_key": "step_038",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "38_网络_se2.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "title": "网络_se2.net.5",
+      "array_key": "step_039",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "39_网络_se2.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "title": "网络_se2.skip",
+      "array_key": "step_040",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "40_网络_se2.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "title": "网络_te3.net.0",
+      "array_key": "step_041",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "41_网络_te3.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "title": "网络_te3.net.1",
+      "array_key": "step_042",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "42_网络_te3.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "title": "网络_te3.net.2",
+      "array_key": "step_043",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "43_网络_te3.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "title": "网络_te3.net.3",
+      "array_key": "step_044",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "44_网络_te3.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "title": "网络_te3.net.4",
+      "array_key": "step_045",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "45_网络_te3.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "title": "网络_te3.net.5",
+      "array_key": "step_046",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "46_网络_te3.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "title": "网络_te3.skip",
+      "array_key": "step_047",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "47_网络_te3.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "title": "网络_se3.net.0",
+      "array_key": "step_048",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "48_网络_se3.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "title": "网络_se3.net.1",
+      "array_key": "step_049",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "49_网络_se3.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 50,
+      "title": "网络_se3.net.2",
+      "array_key": "step_050",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "50_网络_se3.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 51,
+      "title": "网络_se3.net.3",
+      "array_key": "step_051",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "51_网络_se3.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 52,
+      "title": "网络_se3.net.4",
+      "array_key": "step_052",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "52_网络_se3.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 53,
+      "title": "网络_se3.net.5",
+      "array_key": "step_053",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "53_网络_se3.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 54,
+      "title": "网络_se3.skip",
+      "array_key": "step_054",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "54_网络_se3.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 55,
+      "title": "网络_mid.net.0",
+      "array_key": "step_055",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "55_网络_mid.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 56,
+      "title": "网络_mid.net.1",
+      "array_key": "step_056",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "56_网络_mid.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 57,
+      "title": "网络_mid.net.2",
+      "array_key": "step_057",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "57_网络_mid.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 58,
+      "title": "网络_mid.net.3",
+      "array_key": "step_058",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "58_网络_mid.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 59,
+      "title": "网络_mid.net.4",
+      "array_key": "step_059",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "59_网络_mid.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 60,
+      "title": "网络_mid.net.5",
+      "array_key": "step_060",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "60_网络_mid.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 61,
+      "title": "网络_mid.skip",
+      "array_key": "step_061",
+      "shape": [
+        224,
+        13,
+        12
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "61_网络_mid.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 62,
+      "title": "网络_d3.net.0",
+      "array_key": "step_062",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "62_网络_d3.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 63,
+      "title": "网络_d3.net.1",
+      "array_key": "step_063",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "63_网络_d3.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 64,
+      "title": "网络_d3.net.2",
+      "array_key": "step_064",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "64_网络_d3.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 65,
+      "title": "网络_d3.net.3",
+      "array_key": "step_065",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "65_网络_d3.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 66,
+      "title": "网络_d3.net.4",
+      "array_key": "step_066",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "66_网络_d3.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 67,
+      "title": "网络_d3.net.5",
+      "array_key": "step_067",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "67_网络_d3.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 68,
+      "title": "网络_d3.skip",
+      "array_key": "step_068",
+      "shape": [
+        112,
+        27,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "68_网络_d3.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 69,
+      "title": "网络_d2.net.0",
+      "array_key": "step_069",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "69_网络_d2.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 70,
+      "title": "网络_d2.net.1",
+      "array_key": "step_070",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "70_网络_d2.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 71,
+      "title": "网络_d2.net.2",
+      "array_key": "step_071",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "71_网络_d2.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 72,
+      "title": "网络_d2.net.3",
+      "array_key": "step_072",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "72_网络_d2.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 73,
+      "title": "网络_d2.net.4",
+      "array_key": "step_073",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "73_网络_d2.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 74,
+      "title": "网络_d2.net.5",
+      "array_key": "step_074",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "74_网络_d2.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 75,
+      "title": "网络_d2.skip",
+      "array_key": "step_075",
+      "shape": [
+        56,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "75_网络_d2.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 76,
+      "title": "网络_d1.net.0",
+      "array_key": "step_076",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "76_网络_d1.net.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 77,
+      "title": "网络_d1.net.1",
+      "array_key": "step_077",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "77_网络_d1.net.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 78,
+      "title": "网络_d1.net.2",
+      "array_key": "step_078",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "78_网络_d1.net.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 79,
+      "title": "网络_d1.net.3",
+      "array_key": "step_079",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "79_网络_d1.net.3_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 80,
+      "title": "网络_d1.net.4",
+      "array_key": "step_080",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "80_网络_d1.net.4_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 81,
+      "title": "网络_d1.net.5",
+      "array_key": "step_081",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "81_网络_d1.net.5_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 82,
+      "title": "网络_d1.skip",
+      "array_key": "step_082",
+      "shape": [
+        28,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "82_网络_d1.skip_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 83,
+      "title": "网络_head",
+      "array_key": "step_083",
+      "shape": [
+        5,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "83_网络_head_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 84,
+      "title": "预测灰度纹理",
+      "array_key": "step_084",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "84_预测灰度纹理.png",
+          "display_range": [
+            0.19182544946670532,
+            0.8728249669075012
+          ]
+        }
+      ]
+    },
+    {
+      "step": 85,
+      "title": "预测sin方向",
+      "array_key": "step_085",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "85_预测sin方向.png",
+          "display_range": [
+            -1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 86,
+      "title": "预测cos方向",
+      "array_key": "step_086",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "86_预测cos方向.png",
+          "display_range": [
+            -0.9999998807907104,
+            0.9999998807907104
+          ]
+        }
+      ]
+    },
+    {
+      "step": 87,
+      "title": "预测纹线频率",
+      "array_key": "step_087",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "87_预测纹线频率.png",
+          "display_range": [
+            0.1225033849477768,
+            0.20299991965293884
+          ]
+        }
+      ]
+    },
+    {
+      "step": 88,
+      "title": "预测结构置信度",
+      "array_key": "step_088",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "88_预测结构置信度.png",
+          "display_range": [
+            0.1232474222779274,
+            0.9882643222808838
+          ]
+        }
+      ]
+    },
+    {
+      "step": 89,
+      "title": "预测灰度量化",
+      "array_key": "step_089",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "89_预测灰度量化.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 90,
+      "title": "仅缺口内替换后的输出",
+      "array_key": "step_090",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "90_仅缺口内替换后的输出.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 91,
+      "title": "与演示输入的差值",
+      "array_key": "step_091",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float64",
+      "note": "",
+      "images": [
+        {
+          "file": "91_与演示输入的差值.png",
+          "display_range": [
+            -186.0,
+            186.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 92,
+      "title": "与完整对照目标的误差",
+      "array_key": "step_092",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float64",
+      "note": "",
+      "images": [
+        {
+          "file": "92_与完整对照目标的误差.png",
+          "display_range": [
+            -99.0,
+            99.0
+          ]
+        }
+      ]
+    }
+  ],
+  "extra": {
+    "mask_origin": "fixed synthetic ellipse, not acquired defect annotation",
+    "normal_chain_changed": false,
+    "outside_mask_pixel_exact": true,
+    "checkpoint": "/home/tom/fingerprint-deepleaning/personal-pyfing/fingerprint_invariant_lab/fingerprint_frontend_toolkit/05_optional_growth/structural_growth_v3_best.pt",
+    "masked_mae_vs_known_target": 0.12314441758438535
+  }
+}

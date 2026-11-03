@@ -1,0 +1,27 @@
+# 指纹识别系统 Python 依赖包
+# Fingerprint Recognition System Python Dependencies
+
+# 核心数值计算库
+numpy>=1.19.0
+
+# 科学计算库
+scipy>=1.5.0
+
+# 图像处理库
+Pillow>=8.0.0
+
+# 绘图库
+matplotlib>=3.3.0
+
+# 图像处理库（用于ridgesegment.py中的view_as_blocks）
+scikit-image>=0.18.0
+
+# 进度条库（用于显示匹配进度）
+tqdm>=4.60.0
+
+# 可选：更高级的图像处理
+# opencv-python>=4.5.0
+
+# 可选：机器学习库（如果需要）
+# scikit-learn>=0.24.0
+# scikit-image>=0.18.0

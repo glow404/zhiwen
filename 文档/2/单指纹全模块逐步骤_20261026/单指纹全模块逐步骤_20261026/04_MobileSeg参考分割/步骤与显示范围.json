@@ -1,0 +1,1102 @@
+{
+  "module": "04_MobileSeg参考分割",
+  "description": "独立参考分支，输入与传统分割一致；不替换主链传统Mask。保存模型全部叶子层、logit、概率和二值结果。",
+  "steps": [
+    {
+      "step": 1,
+      "title": "输入去噪图",
+      "array_key": "step_001",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "01_输入去噪图.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "尺寸对齐并归一化",
+      "array_key": "step_002",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "02_尺寸对齐并归一化.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "网络_stem.block.0",
+      "array_key": "step_003",
+      "shape": [
+        16,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "03_网络_stem.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "网络_stem.block.1",
+      "array_key": "step_004",
+      "shape": [
+        16,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "04_网络_stem.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "网络_stem.block.2",
+      "array_key": "step_005",
+      "shape": [
+        16,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "05_网络_stem.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "网络_enc1.dw.block.0",
+      "array_key": "step_006",
+      "shape": [
+        16,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "06_网络_enc1.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "title": "网络_enc1.dw.block.1",
+      "array_key": "step_007",
+      "shape": [
+        16,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "07_网络_enc1.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 8,
+      "title": "网络_enc1.dw.block.2",
+      "array_key": "step_008",
+      "shape": [
+        16,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "08_网络_enc1.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 9,
+      "title": "网络_enc1.pw.block.0",
+      "array_key": "step_009",
+      "shape": [
+        32,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "09_网络_enc1.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 10,
+      "title": "网络_enc1.pw.block.1",
+      "array_key": "step_010",
+      "shape": [
+        32,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "10_网络_enc1.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 11,
+      "title": "网络_enc1.pw.block.2",
+      "array_key": "step_011",
+      "shape": [
+        32,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "11_网络_enc1.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 12,
+      "title": "网络_enc2.dw.block.0",
+      "array_key": "step_012",
+      "shape": [
+        32,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "12_网络_enc2.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 13,
+      "title": "网络_enc2.dw.block.1",
+      "array_key": "step_013",
+      "shape": [
+        32,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "13_网络_enc2.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 14,
+      "title": "网络_enc2.dw.block.2",
+      "array_key": "step_014",
+      "shape": [
+        32,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "14_网络_enc2.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 15,
+      "title": "网络_enc2.pw.block.0",
+      "array_key": "step_015",
+      "shape": [
+        48,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "15_网络_enc2.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 16,
+      "title": "网络_enc2.pw.block.1",
+      "array_key": "step_016",
+      "shape": [
+        48,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "16_网络_enc2.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 17,
+      "title": "网络_enc2.pw.block.2",
+      "array_key": "step_017",
+      "shape": [
+        48,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "17_网络_enc2.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 18,
+      "title": "网络_enc3.dw.block.0",
+      "array_key": "step_018",
+      "shape": [
+        48,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "18_网络_enc3.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 19,
+      "title": "网络_enc3.dw.block.1",
+      "array_key": "step_019",
+      "shape": [
+        48,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "19_网络_enc3.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 20,
+      "title": "网络_enc3.dw.block.2",
+      "array_key": "step_020",
+      "shape": [
+        48,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "20_网络_enc3.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 21,
+      "title": "网络_enc3.pw.block.0",
+      "array_key": "step_021",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "21_网络_enc3.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 22,
+      "title": "网络_enc3.pw.block.1",
+      "array_key": "step_022",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "22_网络_enc3.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 23,
+      "title": "网络_enc3.pw.block.2",
+      "array_key": "step_023",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "23_网络_enc3.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 24,
+      "title": "网络_mid.0.dw.block.0",
+      "array_key": "step_024",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "24_网络_mid.0.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 25,
+      "title": "网络_mid.0.dw.block.1",
+      "array_key": "step_025",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "25_网络_mid.0.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 26,
+      "title": "网络_mid.0.dw.block.2",
+      "array_key": "step_026",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "26_网络_mid.0.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 27,
+      "title": "网络_mid.0.pw.block.0",
+      "array_key": "step_027",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "27_网络_mid.0.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 28,
+      "title": "网络_mid.0.pw.block.1",
+      "array_key": "step_028",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "28_网络_mid.0.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 29,
+      "title": "网络_mid.0.pw.block.2",
+      "array_key": "step_029",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "29_网络_mid.0.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 30,
+      "title": "网络_mid.1.dw.block.0",
+      "array_key": "step_030",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "30_网络_mid.1.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 31,
+      "title": "网络_mid.1.dw.block.1",
+      "array_key": "step_031",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "31_网络_mid.1.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 32,
+      "title": "网络_mid.1.dw.block.2",
+      "array_key": "step_032",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "32_网络_mid.1.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 33,
+      "title": "网络_mid.1.pw.block.0",
+      "array_key": "step_033",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "33_网络_mid.1.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 34,
+      "title": "网络_mid.1.pw.block.1",
+      "array_key": "step_034",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "34_网络_mid.1.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 35,
+      "title": "网络_mid.1.pw.block.2",
+      "array_key": "step_035",
+      "shape": [
+        64,
+        7,
+        7
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "35_网络_mid.1.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 36,
+      "title": "网络_dec3.dw.block.0",
+      "array_key": "step_036",
+      "shape": [
+        112,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "36_网络_dec3.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 37,
+      "title": "网络_dec3.dw.block.1",
+      "array_key": "step_037",
+      "shape": [
+        112,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "37_网络_dec3.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 38,
+      "title": "网络_dec3.dw.block.2",
+      "array_key": "step_038",
+      "shape": [
+        112,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "38_网络_dec3.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 39,
+      "title": "网络_dec3.pw.block.0",
+      "array_key": "step_039",
+      "shape": [
+        48,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "39_网络_dec3.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 40,
+      "title": "网络_dec3.pw.block.1",
+      "array_key": "step_040",
+      "shape": [
+        48,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "40_网络_dec3.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 41,
+      "title": "网络_dec3.pw.block.2",
+      "array_key": "step_041",
+      "shape": [
+        48,
+        14,
+        13
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "41_网络_dec3.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 42,
+      "title": "网络_dec2.dw.block.0",
+      "array_key": "step_042",
+      "shape": [
+        80,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "42_网络_dec2.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 43,
+      "title": "网络_dec2.dw.block.1",
+      "array_key": "step_043",
+      "shape": [
+        80,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "43_网络_dec2.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 44,
+      "title": "网络_dec2.dw.block.2",
+      "array_key": "step_044",
+      "shape": [
+        80,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "44_网络_dec2.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 45,
+      "title": "网络_dec2.pw.block.0",
+      "array_key": "step_045",
+      "shape": [
+        32,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "45_网络_dec2.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 46,
+      "title": "网络_dec2.pw.block.1",
+      "array_key": "step_046",
+      "shape": [
+        32,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "46_网络_dec2.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 47,
+      "title": "网络_dec2.pw.block.2",
+      "array_key": "step_047",
+      "shape": [
+        32,
+        28,
+        25
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "47_网络_dec2.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 48,
+      "title": "网络_dec1.dw.block.0",
+      "array_key": "step_048",
+      "shape": [
+        48,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "48_网络_dec1.dw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 49,
+      "title": "网络_dec1.dw.block.1",
+      "array_key": "step_049",
+      "shape": [
+        48,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "49_网络_dec1.dw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 50,
+      "title": "网络_dec1.dw.block.2",
+      "array_key": "step_050",
+      "shape": [
+        48,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "50_网络_dec1.dw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 51,
+      "title": "网络_dec1.pw.block.0",
+      "array_key": "step_051",
+      "shape": [
+        16,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "51_网络_dec1.pw.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 52,
+      "title": "网络_dec1.pw.block.1",
+      "array_key": "step_052",
+      "shape": [
+        16,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "52_网络_dec1.pw.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 53,
+      "title": "网络_dec1.pw.block.2",
+      "array_key": "step_053",
+      "shape": [
+        16,
+        55,
+        50
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "53_网络_dec1.pw.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 54,
+      "title": "网络_dec0.block.0",
+      "array_key": "step_054",
+      "shape": [
+        16,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "54_网络_dec0.block.0_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 55,
+      "title": "网络_dec0.block.1",
+      "array_key": "step_055",
+      "shape": [
+        16,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "55_网络_dec0.block.1_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 56,
+      "title": "网络_dec0.block.2",
+      "array_key": "step_056",
+      "shape": [
+        16,
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "56_网络_dec0.block.2_全部通道.png",
+          "display_range": "each channel independently min-max; feature activations, not restored fingerprints"
+        }
+      ]
+    },
+    {
+      "step": 57,
+      "title": "网络_head",
+      "array_key": "step_057",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "实际forward hook的即时副本，保留激活前/后差别；完整通道原值见NPZ",
+      "images": [
+        {
+          "file": "57_网络_head.png",
+          "display_range": [
+            -2.1635935306549072,
+            14.758265495300293
+          ]
+        }
+      ]
+    },
+    {
+      "step": 58,
+      "title": "最终logit",
+      "array_key": "step_058",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "58_最终logit.png",
+          "display_range": [
+            -14.758265495300293,
+            14.758265495300293
+          ]
+        }
+      ]
+    },
+    {
+      "step": 59,
+      "title": "sigmoid前景概率",
+      "array_key": "step_059",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float32",
+      "note": "",
+      "images": [
+        {
+          "file": "59_sigmoid前景概率.png",
+          "display_range": [
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "step": 60,
+      "title": "阈值05二值Mask",
+      "array_key": "step_060",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "60_阈值05二值Mask.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    }
+  ],
+  "extra": {
+    "threshold": 0.5,
+    "checkpoint": "/home/tom/fingerprint-deepleaning/personal-pyfing/fingerprint_invariant_lab/fingerprint_frontend_toolkit/02_segmentation/models/mobile_seg_best.pt"
+  }
+}

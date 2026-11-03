@@ -1,0 +1,142 @@
+Enhancement 目录文件作用说明
+
+1) temp/Place input image files here
+作用：输入图像占位文件，提示将待增强图像放入 temp 目录。
+
+2) tryty.m
+作用：实验脚本，批量读取 bmp 并调用 ext_finger_skeleton 做骨架特征提取。
+
+3) try123.m
+作用：实验脚本，批量调用 extract_finger_PUF_contact，导出 txt/jpg 中间结果。
+
+4) try.m
+作用：实验脚本，流程与 try123.m 类似，用于批处理提取与结果导出。
+
+5) trace_path.m
+作用：沿细节点分支追踪脊线路径，生成路径标记图。
+
+6) tico.m
+作用：在给定半径/角度采样方向场，计算局部方向一致性并返回最优点。
+
+7) testfin_skelonly.m
+作用：骨架化增强流程（分割+方向+频率+滤波），输出骨架风格二值图。
+
+8) testfin_NIST_MinuNet.m
+作用：NIST/MinuNet 版本增强函数，按 NIST 参数输出增强二值结果。
+
+9) testfin_NIST.m
+作用：NIST 数据参数版增强函数。
+
+10) testfin_IIITD.m
+作用：IIITD 数据参数版增强函数。
+
+11) testfin_FingerNet_fft.m
+作用：FingerNet 图像的多尺度 FFT 增强核心函数，并将结果写回文件。
+
+12) testfin_FingerNet_Contact.m
+作用：接触式指纹参数版增强函数（FingerNet 分支）。
+
+13) testfin_FingerNet.m
+作用：FingerNet 图像常规增强函数（分割、方向、频率、滤波、二值化）。
+
+14) testfin_FVC.m
+作用：FVC 数据参数版增强函数。
+
+15) testfin.m
+作用：通用示例增强函数（经典 ridgesegment/ridgeorient/ridgefreq/ridgefilter 流程）。
+
+16) test_bifurcation.m
+作用：分叉细节点验证与分支方向判定辅助函数。
+
+17) smoothen_orientation_image.m
+作用：方向场平滑（向量方式平滑双角度表示）。
+
+18) smoothen_frequency_image.m
+作用：频率图扩散平滑，修复无效/离散频率块。
+
+19) show.m
+作用：图像显示工具函数（统一灰度/彩色显示、窗口与标题管理）。
+
+20) sc_compute.m
+作用：形状上下文（Shape Context）直方图计算函数。
+
+21) ridgesegment.m
+作用：脊线区域分割与归一化，生成 mask。
+
+22) ridgeorient.m
+作用：估计局部脊线方向，并输出可靠性/一致性指标。
+
+23) ridgefreq.m
+作用：分块估计脊线频率图，并给出中位频率。
+
+24) ridgefilter.m
+作用：按方向与频率做 Gabor 风格滤波，完成脊线增强。
+
+25) plotridgeorient.m
+作用：方向场可视化，将方向矢量叠加到图像上。
+
+26) p.m
+作用：8 邻域像素访问工具函数（细节点算法基础函数）。
+
+27) normalise.m
+作用：图像归一化（0-1 或指定均值方差）。
+
+28) kNearestNeighbors.m
+作用：k 近邻搜索工具函数（欧氏距离）。
+
+29) freqest.m
+作用：单块脊线频率估计函数（供 ridgefreq 调用）。
+
+30) fft_enhance_cubs.m
+作用：FFT 增强主算法（方向/频率/带宽估计与重建）。
+
+31) f_enhance_3420_NIST.m
+作用：NIST 3420 配置的增强封装函数，输出 bin/mask/方向/一致性等结果。
+
+32) ext_finger_skeleton.m
+作用：骨架细节点提取主函数（增强、核心点估计、分叉检测、细节点筛选）。
+
+33) enh
+作用：空占位文件（当前未承载逻辑）。
+
+34) dist2.m
+作用：两组点的平方欧氏距离矩阵计算。
+
+35) compute_coherence.m
+作用：根据方向场计算 coherence 一致性图。
+
+36) calc_orient.m
+作用：方向相似度计算函数，输出匹配相似度与索引信息。
+
+37) angular_filter_bank.m
+作用：预计算角度滤波器组，并导出 mat/h 系数文件。
+
+38) Rename_Sheet_2.m
+作用：批量重命名脚本，去掉文件名中的 `_enh...bmp` 片段。
+
+39) Finger_Enhance_skeletononly.m
+作用：批处理入口脚本，读取目录图像并调用 testfin_skelonly。
+
+40) Finger_Enhance_original_NIST_inuet.m
+作用：NIST/MinuNet 批处理入口脚本，调用 testfin_NIST_MinuNet。
+
+41) Finger_Enhance_original_NIST.m
+作用：NIST 批处理入口脚本，调用 testfin_NIST。
+
+42) Finger_Enhance_original_IIITD.m
+作用：IIITD 批处理入口脚本（当前主要做预处理与细化，增强调用多为注释状态）。
+
+43) Finger_Enhance_FingerNet.m
+作用：FingerNet 输出图像的批处理入口，调用 testfin_FingerNet_fft。
+
+44) Finger_Enhance.m
+作用：通用批处理入口脚本，调用 testfin 完成增强。
+
+45) FingerNet_testfin_skelonly.m
+作用：FingerNet 场景下的骨架版增强函数。
+
+46) FVC2004_Finger_Enhance_FingerNet.m
+作用：FVC2004/FingerNet 场景批处理入口，调用 testfin_FingerNet_fft。
+
+47) FVC2004_AE.m
+作用：FVC2004 自动增强批处理入口脚本（实验配置）。

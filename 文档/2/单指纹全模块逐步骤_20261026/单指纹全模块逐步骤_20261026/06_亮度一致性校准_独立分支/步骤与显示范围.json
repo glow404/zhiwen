@@ -1,0 +1,165 @@
+{
+  "module": "06_亮度一致性校准_独立分支",
+  "description": "从同一去噪图独立运行已有交付归档中的一致性校准；不插入或改变主链。未触发的调整如实记录为跳过，不人为制造不一致。",
+  "steps": [
+    {
+      "step": 1,
+      "title": "输入去噪图",
+      "array_key": "step_001",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "01_输入去噪图.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "3乘3_初始区域均值",
+      "array_key": "step_002",
+      "shape": [
+        3,
+        3
+      ],
+      "dtype": "float64",
+      "note": "",
+      "images": [
+        {
+          "file": "02_3乘3_初始区域均值.png",
+          "display_range": [
+            129.3939393939394,
+            132.22058823529412
+          ]
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "3乘3_阶段输出",
+      "array_key": "step_003",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "不满足门控则跳过；无需调整时与输入相同",
+      "images": [
+        {
+          "file": "03_3乘3_阶段输出.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 4,
+      "title": "6乘6_初始区域均值",
+      "array_key": "step_004",
+      "shape": [
+        6,
+        6
+      ],
+      "dtype": "float64",
+      "note": "",
+      "images": [
+        {
+          "file": "04_6乘6_初始区域均值.png",
+          "display_range": [
+            126.76470588235294,
+            136.27863777089783
+          ]
+        }
+      ]
+    },
+    {
+      "step": 5,
+      "title": "6乘6_阶段输出",
+      "array_key": "step_005",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "不满足门控则跳过；无需调整时与输入相同",
+      "images": [
+        {
+          "file": "05_6乘6_阶段输出.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "实际总调整量",
+      "array_key": "step_006",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "float64",
+      "note": "",
+      "images": [
+        {
+          "file": "06_实际总调整量.png",
+          "display_range": [
+            -1e-15,
+            1e-15
+          ]
+        }
+      ]
+    },
+    {
+      "step": 7,
+      "title": "最终一致性输出",
+      "array_key": "step_007",
+      "shape": [
+        110,
+        100
+      ],
+      "dtype": "uint8",
+      "note": "",
+      "images": [
+        {
+          "file": "07_最终一致性输出.png",
+          "display_range": [
+            0,
+            255
+          ]
+        }
+      ]
+    }
+  ],
+  "extra": {
+    "source": "/home/tom/fingerprint-deepleaning/personal-pyfing/fingerprint_invariant_lab/reports/delivery_packages/二阶段验收交付包_20261019/二阶段验收/一致性差异/一致性差异/fingerprint_brightness_consistency_calibration.py",
+    "stages": [
+      {
+        "grid": 3,
+        "entered": true,
+        "adjustments": 0,
+        "cv_percent": 0.61925583590606
+      },
+      {
+        "grid": 6,
+        "entered": true,
+        "adjustments": 0,
+        "cv_percent": 1.8534889264992889
+      }
+    ],
+    "passed": true,
+    "official_output_pixel_exact": true
+  }
+}
