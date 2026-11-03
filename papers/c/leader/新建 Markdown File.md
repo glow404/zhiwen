@@ -1,0 +1,1 @@
+[[2602.15493\] LEADER: Lightweight End-to-End Attention-Gated Dual Autoencoder for Robust Minutiae Extraction](https://arxiv.org/abs/2602.15493)
